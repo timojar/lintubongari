@@ -6,8 +6,8 @@ package com.example.birdchannel.model;
 public class Bird {
 
 
-private int id;
-private String name;
+    private int id;
+    private String name;
 
     public Bird(int id, String name) {
         this.id = id;
@@ -28,5 +28,14 @@ private String name;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Bird{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
