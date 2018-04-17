@@ -6,34 +6,37 @@ import './App.css';
 
 class Bird extends Component {
 
-  state = { birdId: 0, value: 0, lkm: 0 };
+  state = { name: '' };
 
-  handleChange = (e) => {
-    this.setState({ value: e.target.value, lkm: e.target.value });
+  async handleClick() {
+    console.log('Tämä lintu on: ', this.props.bird.name, ' sen tunnus on: ', this.props.bird.id, " ja niitä on havaittu: ", this.props.bird.birdTime);
+    const { bird } = this.props;
+    const body = JSON.stringify(bird);
+    await fetch('http://localhost:8080/new', { method: 'POST', body })
+    this.props.callback();
 
   }
-
-  setId = (i) => {
-    this.setState({ value: i.target.value, birdId: i.target.value, })
-    console.log(this.state.value);
-  }
-
 
   render() {
-
-    const { name, id } = this.props.bird;
+    const c = this.props.callback;
+    const { name, id, quantity, birdTime } = this.props.bird;
     return (
       <div>
-        <label><span>{name}</span></label>
+        <label><span>{name} </span></label>
         <br />
-        <input name="birdId" value={id} type="hidden" onChange={this.setId} />
-        <input value={this.state.value} onChange={this.handleChange} type="number" />
+        <label>lkm: <span>{birdTime.length}</span></label>
+        <br />
+        <button onClick={() => this.handleClick()}>
+          Click me
+      </button>
+        <br />
+        <br />
       </div>);
   }
 }
 
 class App extends Component {
-  state = { birds: [] };
+  state = { birds: [], callback: '' };
   render() {
     return (
       <div className="App">
@@ -45,17 +48,30 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         {this.state.birds.map(b => (
-          <Bird key={b.id} bird={b} />
+          <Bird callback={() => this.callback()} key={b.id} bird={b} />
         ))}
       </div>
     );
   }
 
+  async callback() {
+    const result = await fetch('http://localhost:8080/test/', { method: 'GET', }, );
+    const data = await result.json();
+    console.log('data' + data);
+    console.log(data);
+    this.setState({ birds: data });
+
+
+  }
+
+
   async componentDidMount() {
-    const result = await fetch('http://localhost:8080/test', { method: 'GET', }, );
+    const result = await fetch('http://localhost:8080/test/', { method: 'GET', }, );
     const body = await result.json();
-    this.setState({ birds: body });
     console.log(body)
+    this.setState({ birds: body });
+
+
   }
 }
 
