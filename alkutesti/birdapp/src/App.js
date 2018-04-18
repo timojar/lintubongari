@@ -4,6 +4,23 @@ import './App.css';
 
 
 
+class Stamp extends Component {
+
+
+
+  render() {
+
+    const { name, time } = this.props.stamp;
+    return (
+      <div>
+        <label>{time.toString()} bird: <span class="bird">{name.toString()} </span> </label>
+        <br />
+      </div>);
+  }
+}
+
+
+
 class Bird extends Component {
 
   state = { name: '' };
@@ -36,7 +53,7 @@ class Bird extends Component {
 }
 
 class App extends Component {
-  state = { birds: [], callback: '' };
+  state = { birds: [], stamps: [], callback: '' };
   render() {
     return (
       <div className="App">
@@ -44,12 +61,19 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
+        <div id="stamps">
+        <h2>Havainnot:</h2>
+        {this.state.stamps.map(s => (
+          <Stamp key={s.id} stamp={s} />
+        ))}
+        </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+<div class="birds">
         {this.state.birds.map(b => (
           <Bird callback={() => this.callback()} key={b.id} bird={b} />
-        ))}
+        ))}</div>
       </div>
     );
   }
@@ -58,9 +82,10 @@ class App extends Component {
     const result = await fetch('http://localhost:8080/test/', { method: 'GET', }, );
     const data = await result.json();
     console.log('data' + data);
-    console.log(data);
     this.setState({ birds: data });
-
+    const stamps = this.sortStamps(this.state.birds);
+    this.setState({ stamps: stamps });
+    console.log(this.state.stamps);
 
   }
 
@@ -68,11 +93,28 @@ class App extends Component {
   async componentDidMount() {
     const result = await fetch('http://localhost:8080/test/', { method: 'GET', }, );
     const body = await result.json();
-    console.log(body)
     this.setState({ birds: body });
+    const stamps = this.sortStamps(this.state.birds)
+    this.setState({ stamps: stamps });
+    console.log(this.state.stamps);
 
 
   }
+
+  sortStamps(m) {
+    let stamps = [];
+    m.forEach((x) => {
+      x.birdTime.forEach((k) => {
+        stamps.push({ time: new Date(k), name: x.name, id:k.length })
+      });
+    });
+    stamps.sort((a, b) => a.time - b.time);
+
+    return stamps;
+  }
+
+
+
 }
 
 export default App;

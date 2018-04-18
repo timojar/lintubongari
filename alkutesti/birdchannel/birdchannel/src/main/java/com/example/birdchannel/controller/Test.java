@@ -84,7 +84,7 @@ public class Test {
         String jsonInString = null;
 
         List<Bird> birds = new ArrayList<>();
-        birds.add(new Bird(1, "talitintti", birdTime));
+        birds.add(new Bird(1, "harakka", birdTime));
         System.out.println(birds.get(0).toString());
         birds.add(new Bird(2, "varis", birdTime));
         System.out.println(birds.get(0).toString());
@@ -192,7 +192,7 @@ public class Test {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Tiedostoa ei löyytynyt");
         }
         return birds;
     }
