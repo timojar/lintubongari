@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Input from '../src/comp/Form';
 
 
 
@@ -62,18 +63,21 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div id="stamps">
-        <h2>Havainnot:</h2>
-        {this.state.stamps.map(s => (
-          <Stamp key={s.id} stamp={s} />
-        ))}
+          <h2>Havainnot:</h2>
+          {this.state.stamps.map(s => (
+            <Stamp key={s.id} stamp={s} />
+          ))}
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-<div class="birds">
-        {this.state.birds.map(b => (
-          <Bird callback={() => this.callback()} key={b.id} bird={b} />
-        ))}</div>
+        <div class="birds">
+          {this.state.birds.map(b => (
+            <Bird callback={() => this.callback()} key={b.id} bird={b} />
+          ))}</div>
+
+        <Input callback={() => this.callback()}  />
+
       </div>
     );
   }
@@ -105,7 +109,7 @@ class App extends Component {
     let stamps = [];
     m.forEach((x) => {
       x.birdTime.forEach((k) => {
-        stamps.push({ time: new Date(k), name: x.name, id:k.length })
+        stamps.push({ time: new Date(k), name: x.name, id: k.length })
       });
     });
     stamps.sort((a, b) => a.time - b.time);

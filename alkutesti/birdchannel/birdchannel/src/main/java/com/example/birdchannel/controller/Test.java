@@ -28,15 +28,12 @@ import java.util.*;
 @Controller
 public class Test {
 
-
     @Value("${tiedosto}")
     private String filepath;
-
 
     public String getFilepath() {
         return filepath;
     }
-
     public void setFilepath(String filepath) {
         this.filepath = filepath;
     }
@@ -44,16 +41,30 @@ public class Test {
     @PostMapping(path = "/new")
     @ResponseBody
     public Bird addNote(@RequestBody String body) {
-
-
         Bird bird = parsingBird(body);
         System.out.println(bird.toString());
-        List<Bird> birds=parseBirdFile();
-        boolean succes=upDateFile(birds, bird);
-
-
+        List<Bird> birds = parseBirdFile();
+        boolean succes = upDateFile(birds, bird);
         return new Bird(0, "", 0);
     }
+
+    @PostMapping(path = "/newbird")
+    @ResponseBody
+    public String ceateBird(@RequestBody String body) {
+
+        List<String> birdTime=new ArrayList();
+        System.out.println(body.toString());
+        List<Bird> birds = parseBirdFile();
+        int id=birds.size()+1;
+        Bird bird=new Bird(id,body.toString().replace("\"",""), birdTime);
+        birds.add(bird);
+        upDateFile(birds, bird);
+
+        return "";
+    }
+
+
+
 
 
     @GetMapping("/test")
@@ -121,7 +132,7 @@ public class Test {
         String name = "";
         int id = 0;
         int quantity = 0;
-        List<String>birdTime=new ArrayList();
+        List<String> birdTime = new ArrayList();
         try {
             id = Integer.parseInt(result.get("id").toString());
             System.out.println(id);
@@ -133,10 +144,10 @@ public class Test {
             for (int e = 0; e < birdTimeJson.length; e++) {
                 System.out.println(birdTimeJson[e] + " nro" + e);
                 if (birdTimeJson[e].length() > 4) {
-                    birdTime.add(birdTimeJson[e].replace("[","").replace("]","").trim());
+                    birdTime.add(birdTimeJson[e].replace("[", "").replace("]", "").trim());
                 }
             }
-                birdTime.add(new Timestamp(System.currentTimeMillis()).toString());
+            birdTime.add(new Timestamp(System.currentTimeMillis()).toString());
 
 
             bird.setName(name);
@@ -171,15 +182,15 @@ public class Test {
             for (int i = 0; i < jsonarray.size(); i++) {
                 Map<String, Object> result = springParser.parseMap(jsonarray.get(i).toString());
 
-                System.out.println( jsonarray.toString()+" array nro" + i);
+                System.out.println(jsonarray.toString() + " array nro" + i);
                 id = Integer.parseInt(result.get("id").toString());
                 name = result.get("name").toString();
                 String[] birdTimeJson = result.get("birdTime").toString().split(",");
                 System.out.println(birdTimeJson);
                 for (int e = 0; e < birdTimeJson.length; e++) {
                     System.out.println(birdTimeJson[e] + " nro" + e);
-                    if(birdTimeJson[e].length()>4) {
-                        birdTime.add(birdTimeJson[e].replace("[","").replace("]","").trim());
+                    if (birdTimeJson[e].length() > 4) {
+                        birdTime.add(birdTimeJson[e].replace("[", "").replace("]", "").trim());
                     }
 
                 }
@@ -196,7 +207,6 @@ public class Test {
         }
         return birds;
     }
-
 
 
     private boolean upDateFile(List<Bird> birds, Bird bird) {
@@ -216,7 +226,7 @@ public class Test {
 
             }
 
-            }
+        }
 
 
         try {
@@ -236,8 +246,13 @@ public class Test {
             succes = false;
 
         }
-return succes;
-    }         }
+        return succes;
+    }
+
+
+
+
+}
 
 
 
