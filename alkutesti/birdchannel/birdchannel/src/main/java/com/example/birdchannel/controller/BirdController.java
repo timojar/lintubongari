@@ -26,9 +26,9 @@ import java.util.*;
 
 
 @Controller
-public class Test {
+public class BirdController {
 
-    @Value("${tiedosto}")
+    @Value("${filelocation}")
     private String filepath;
 
     public String getFilepath() {
@@ -40,12 +40,15 @@ public class Test {
 
     @PostMapping(path = "/new")
     @ResponseBody
-    public Bird addNote(@RequestBody String body) {
+    public String addNote(@RequestBody String body) {
         Bird bird = parsingBird(body);
         System.out.println(bird.toString());
         List<Bird> birds = parseBirdFile();
         boolean succes = upDateFile(birds, bird);
-        return new Bird(0, "", 0);
+        if(succes==true){
+          return   "succes";
+        }
+        return "fail";
     }
 
     @PostMapping(path = "/newbird")
