@@ -1,95 +1,108 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Input from '../src/comp/Form';
-
-
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Input from "../src/comp/Form";
 
 class Stamp extends Component {
-  
   render() {
     const { name, time } = this.props.stamp;
     return (
-      <div>
-        <label>{time.toString()} bird: <span class="bird">{name.toString()} </span> </label>
-        <br />
-      </div>);
+      <p>
+        {time.toString()} bird:{" "}
+        <span className="bolding">{name.toString()} </span>{" "}
+      </p>
+    );
   }
 }
 
 class Bird extends Component {
-  state = { name: '' };
+  state = { name: "" };
   async handleClick() {
-    console.log('Tämä lintu on: ', this.props.bird.name, ' sen tunnus on: ', this.props.bird.id, " ja niitä on havaittu: ", this.props.bird.birdTime);
     const { bird } = this.props;
     const body = JSON.stringify(bird);
-    await fetch('http://localhost:8080/new', { method: 'POST', body })
+    await fetch("http://localhost:8080/new", { method: "POST", body });
     this.props.callback();
   }
   render() {
-     const { name, id, quantity, birdTime } = this.props.bird;
+    const { name, id, quantity, sightings } = this.props.bird;
     return (
-      <div>
-        <label><span>{name} </span></label>
-        <br />
-        <label>lkm: <span>{birdTime.length}</span></label>
-        <br />
-        <button onClick={() => this.handleClick()}>
-          Click me
-      </button>
-        <br />
-        <br />
-      </div>);
+      <tr>
+        <td>{name}</td>
+        <td>{sightings.length}</td>
+        <td>
+          <button onClick={() => this.handleClick()}>Click me</button>
+        </td>
+      </tr>
+    );
   }
 }
 
 class App extends Component {
-  state = { birds: [], stamps: [], callback: '' };
+  state = { birds: [], stamps: [], callback: "" };
   render() {
     return (
       <div className="App">
-        
+        <header className="App-header" />
+
+        <div className="birds">
+          <br />
+          <br />
+          <table>
+            <thead>
+              <tr>
+                <th>Lintulaji</th>
+                <th>Lukumäärä</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.birds.map(b => (
+                <Bird callback={() => this.callback()} key={b.id} bird={b} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <br />
+        <br />
+        <div id="newbird">
+          <Input callback={() => this.callback()} />
+        </div>
         <div id="stamps">
-          <h2>Havainnot:</h2>
+          <p className="bolding">Lintuhavainnot </p>
           {this.state.stamps.map((s, i) => (
             <Stamp key={s.time.getTime()} stamp={s} />
           ))}
         </div>
-        
-        <div class="birds">
-          {this.state.birds.map(b => (
-            <Bird callback={() => this.callback()} key={b.id} bird={b} />
-          ))}</div>
-          
-        <Input callback={() => this.callback()}  />
       </div>
     );
   }
 
-  async callback() {  
-    const hello = 'hello';    
-    const result = await fetch('http://localhost:8080/test/', { method: 'GET', }, );
+  async callback() {
+    const hello = "hello";
+    const result = await fetch("http://localhost:8080/data/", {
+      method: "GET"
+    });
     const birds = await result.json();
     const stamps = this.sortStamps(birds);
     this.setState({ birds, stamps });
   }
 
-
   async componentDidMount() {
-    const result = await fetch('http://localhost:8080/test/', { method: 'GET', }, );
+    const result = await fetch("http://localhost:8080/data/", {
+      method: "GET"
+    });
     const birds = await result.json();
-    const stamps = this.sortStamps(birds)
+    const stamps = this.sortStamps(birds);
     this.setState({ birds, stamps });
   }
 
   sortStamps(birds) {
     const stamps = [];
     birds.forEach(bird => {
-      bird.birdTime.forEach(timeStampStr => {
+      bird.sightings.forEach(timeStampStr => {
         stamps.push({
           time: new Date(timeStampStr),
-          name: bird.name,
-          id: stamps.length + 1
+          name: bird.name
         });
       });
     });
@@ -97,9 +110,6 @@ class App extends Component {
 
     return stamps;
   }
-
-
-
 }
 
 export default App;

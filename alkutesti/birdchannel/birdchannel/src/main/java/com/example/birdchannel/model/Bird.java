@@ -11,7 +11,7 @@ public class Bird {
 
     private int id;
     private String name;
-    private List<String> birdTime;
+    private List<String> sightings;
 
     public Bird() {
     }
@@ -21,10 +21,10 @@ public class Bird {
         this.name = name;
     }
 
-    public Bird(int id, String name, List<String> birdTime) {
+    public Bird(int id, String name, List<String> sightings) {
         this.id = id;
         this.name = name;
-        this.birdTime = birdTime;
+        this.sightings = sightings;
     }
 
     public int getId() {
@@ -43,12 +43,12 @@ public class Bird {
         this.name = name;
     }
 
-    public List<String> getBirdTime() {
-        return birdTime;
+    public List<String> getSightings() {
+        return sightings;
     }
 
-    public void setBirdTime(List<String> birdTime) {
-        this.birdTime = birdTime;
+    public void setSightings(List<String> sightings) {
+        this.sightings = sightings;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Bird {
         return "Bird{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", birdTime=" + birdTime +
+                ", sightings=" + sightings +
                 '}';
     }
 }

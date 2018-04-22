@@ -1,4 +1,4 @@
-.App {
+.App { background-color: #DDF0D9;
   text-align: center;
 }
 
@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #BD7C5B;
   height: 150px;
   padding: 20px;
   color: white;
@@ -22,13 +22,19 @@
   font-size: large;
 }
 
-#stamps{float: left;}
+#stamps{float: left;
+  margin-left: 200px
+}
+#newbird{float: left;
+margin-left: 130px}
 
-.bird{font-weight: bold}
+.bolding{font-weight: bold;
+ }
 
+ body{ background-color: #DDF0D9;}
 
 .birds{float:left;
-margin-left: 400px
+margin-left: 100px;
 
 }
 
