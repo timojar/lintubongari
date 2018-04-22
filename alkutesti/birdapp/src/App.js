@@ -24,7 +24,7 @@ class Bird extends Component {
     this.props.callback();
   }
   render() {
-    const { name, id, quantity, sightings } = this.props.bird;
+    const { name, id, sightings } = this.props.bird;
     return (
       <tr>
         <td>{name}</td>
@@ -78,7 +78,6 @@ class App extends Component {
   }
 
   async callback() {
-    const hello = "hello";
     const result = await fetch("http://localhost:8080/data/", {
       method: "GET"
     });

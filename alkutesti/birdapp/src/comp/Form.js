@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 class Input extends Component {
-  state = { value: "", event: "" };
+  state = { value: "" };
 
   async handleClick(e) {
     const valueStr = this.state.value;

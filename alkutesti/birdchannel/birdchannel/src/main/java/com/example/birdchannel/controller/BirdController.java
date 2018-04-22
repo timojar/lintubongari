@@ -65,8 +65,11 @@ public class BirdController {
         int id = birds.size() + 1;
         Bird bird = new Bird(id, body.toString().replace("\"", ""), sightings);
         birds.add(bird);
-        upDateFile(birds, bird);
-        System.out.println(new Timestamp(System.currentTimeMillis()).toString() + " -  lajin lisäys: " + bird.getName());
+        if (bird.getName().trim().length() > 0) {
+            upDateFile(birds, bird);
+            System.out.println(new Timestamp(System.currentTimeMillis()).toString() + " -  lajin lisäys: " + bird.getName());
+        }
+
 
         return "";
     }
@@ -213,7 +216,7 @@ public class BirdController {
         for (int i = 0; i < birds.size(); i++) {
             if (birdId != birds.get(i).getId()) {
                 Bird bird = birds.get(i);
-                otherPart = otherPart+", " + bird.getName() + " " + bird.getSightings().size() + " kappaletta";
+                otherPart = otherPart + ", " + bird.getName() + " " + bird.getSightings().size() + " kappaletta";
             }
         }
 

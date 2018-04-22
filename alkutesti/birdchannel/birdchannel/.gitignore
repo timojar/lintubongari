@@ -1,6 +1,14 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+
+# Untracked files:
+    [...]
+    #       birdata.json
+    [...]
+
+
+
 ### STS ###
 .apt_generated
 .classpath
@@ -23,3 +31,4 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
