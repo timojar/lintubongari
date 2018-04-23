@@ -47,10 +47,10 @@ public class BirdController {
 
         List<Bird> birds = parseBirdFile();
         report = report + reportOtherBirds(birds, bird.getId());
-        boolean succes = upDateFile(birds, bird);
-        if (succes == true) {
+        boolean success = upDateFile(birds, bird);
+        if (success == true) {
             System.out.println(report);
-            return "succes";
+            return "success";
         }
 
         return "fail";
@@ -58,7 +58,7 @@ public class BirdController {
 
     @PostMapping(path = "/newbird")
     @ResponseBody
-    public String ceateBird(@RequestBody String body) {
+    public String createBird(@RequestBody String body) {
 
         List<String> sightings = new ArrayList();
         List<Bird> birds = parseBirdFile();
@@ -69,8 +69,6 @@ public class BirdController {
             upDateFile(birds, bird);
             System.out.println(new Timestamp(System.currentTimeMillis()).toString() + " -  lajin lisäys: " + bird.getName());
         }
-
-
         return "";
     }
 
@@ -107,8 +105,6 @@ public class BirdController {
             e.printStackTrace();
         }
         return birds;
-
-
     }
 
 
@@ -135,11 +131,9 @@ public class BirdController {
             sightings.add(new Timestamp(System.currentTimeMillis()).toString());
             bird.setName(name);
             bird.setSightings(sightings);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return bird;
     }
 
@@ -155,14 +149,12 @@ public class BirdController {
         String name;
         try {
             Object obj = parser.parse(new FileReader(filepath));
-
             jsonarray = (JSONArray) obj;
             for (int i = 0; i < jsonarray.size(); i++) {
                 Map<String, Object> result = springParser.parseMap(jsonarray.get(i).toString());
                 id = Integer.parseInt(result.get("id").toString());
                 name = result.get("name").toString();
                 String[] sightingsJson = result.get("sightings").toString().split(",");
-
                 for (int e = 0; e < sightingsJson.length; e++) {
                     if (sightingsJson[e].length() > 4) {
                         sightings.add(sightingsJson[e].replace("[", "").replace("]", "").trim());
@@ -174,7 +166,7 @@ public class BirdController {
 
 
         } catch (Exception e) {
-            System.out.println("Tiedostoa ei löyytynyt");
+            System.out.println("Tiedostoa ei löyytynyt. Luodaan tiedosto");
         }
         return birds;
     }
@@ -199,8 +191,6 @@ public class BirdController {
             file.write(jsonInString);
             file.flush();
             file.close();
-
-            ;
         } catch (Exception e) {
             e.printStackTrace();
             succes = false;
